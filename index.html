@@ -169,12 +169,11 @@ button.sm{min-height:36px;padding:4px 12px;font-size:14px}
         <div class="ph" style="margin:0"><h2>Daily log</h2><span class="pill" id="status" role="status">Not saved yet</span></div>
 
         <div class="field">
-          <label for="fDate">Day</label>
+          <div class="mhead"><label for="fDate">Day</label><button type="button" class="ghost sm" id="dToday">Today</button></div>
           <div class="inline">
             <button type="button" class="ghost sq" id="dPrev" aria-label="Previous day">‹</button>
             <input type="date" id="fDate">
             <button type="button" class="ghost sq" id="dNext" aria-label="Next day">›</button>
-            <button type="button" class="ghost" id="dToday">Today</button>
           </div>
         </div>
 
