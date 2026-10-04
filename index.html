@@ -23,7 +23,7 @@
   --gain:#4CC28B; --gain-soft:#1C3A2E; --pace:#E6A64A; --warn:#F2867E; --today:#E4EBF0; color-scheme:dark}
 
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--body);margin:0;padding-inline:16px;padding-block:20px 40px}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);margin:0;padding-inline:16px;padding-block:20px 40px}
 .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 h1,h2{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;letter-spacing:.01em}
 h1{font-size:34px;line-height:1}
@@ -43,9 +43,10 @@ h2{font-size:20px}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
 .charts,.rail{display:flex;flex-direction:column;gap:18px;min-width:0}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
-.ph{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-bottom:8px}
-.readout{margin:0;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:1.45em}
-.chart{width:100%;touch-action:pan-y;cursor:crosshair}
+.ph{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:12px}
+.readout{margin:2px 0 10px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:1.5em}
+.chart{width:100%;touch-action:pan-y;cursor:crosshair;border-radius:6px}
+.chart:focus-visible{outline:2px solid var(--gain);outline-offset:4px}
 .chart svg{display:block}
 .chart text{font:500 11px var(--body);fill:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:6px}
@@ -55,22 +56,35 @@ h2{font-size:20px}
 .sw.past{border-color:var(--ink)}
 .sw.dot{width:8px;height:8px;border:0;border-radius:50%;background:var(--ink)}
 
-.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+.field label{font-weight:500}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;width:100%;min-width:0}
-input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible,.meal input:focus-visible{outline:2px solid var(--gain);outline-offset:2px}
-.meals{list-style:none;margin:14px 0 10px;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
-.meal{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.meal input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--gain);cursor:pointer}
+.stack{display:flex;flex-direction:column;gap:16px}
+input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:44px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--gain);outline-offset:2px}
+.inline{display:flex;gap:8px;align-items:stretch}
+.inline input{flex:1}
+.weight input{text-align:center;font-family:var(--display);font-weight:700;font-size:24px;padding-block:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.meals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.meal{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;min-height:56px;border-radius:8px;background:var(--bg);border:1px solid transparent;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.meal:hover{border-color:var(--line)}
+.meal input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--gain);cursor:pointer}
+.meal:has(input:checked){background:var(--gain-soft);border-color:var(--gain)}
+.meal:has(input:focus-visible){outline:2px solid var(--gain);outline-offset:2px}
 .meal b{display:block;font-weight:600}
-.meal .what{font-size:13px;color:var(--muted)}
-.meal .kc{font-size:13px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
-.meal:has(input:checked) b{color:var(--gain)}
-.note{font-size:13px;color:var(--muted);margin:8px 0 0}
-.status{font-size:12px;color:var(--muted);margin:10px 0 0;min-height:1.4em}
+.meal .what{display:block;font-size:14px;color:var(--muted);line-height:1.35}
+.meal .kc{font-size:14px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{font-size:14px;color:var(--muted);margin:0}
+.status{font-size:14px;color:var(--muted);margin:0;min-height:1.5em}
+.pill{font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--bg);color:var(--muted);white-space:nowrap}
+.pill.ok{background:var(--gain-soft);color:var(--gain)}
+.pill.err{color:var(--warn)}
+.status.err{color:var(--warn)}
 
 .bars{display:flex;flex-direction:column;gap:14px;margin-top:10px}
-.bl{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px}
+.bl{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-bottom:6px}
 .bl span:last-child{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .track{height:8px;border-radius:4px;background:var(--gain-soft);overflow:hidden}
 .track i{display:block;height:100%;width:0;background:var(--gain);border-radius:4px;transition:width .4s ease}
@@ -78,15 +92,22 @@ input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visi
 
 details summary{cursor:pointer;font-family:var(--display);font-weight:600;font-size:20px;list-style-position:inside}
 .set{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-button{font:600 14px var(--body);background:var(--gain);color:var(--surface);border:0;border-radius:6px;padding:9px 14px;cursor:pointer;justify-self:start}
-.foot{font-size:13px;color:var(--muted);max-width:75ch;margin:0}
+button{font:600 15px var(--body);background:var(--gain);color:var(--surface);border:1px solid var(--gain);border-radius:8px;padding:8px 16px;min-height:44px;cursor:pointer;touch-action:manipulation;transition:background-color .15s ease,transform .1s ease}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:wait}
+button.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+button.ghost:hover{border-color:var(--muted)}
+button.sq{min-width:44px;padding-inline:0;font-size:20px;line-height:1}
+button.sm{min-height:36px;padding:4px 12px;font-size:14px}
+.set button[type="submit"]{align-self:flex-start}
+.foot{font-size:14px;color:var(--muted);max-width:75ch;margin:0}
 
 @media (max-width:900px){
   .grid{grid-template-columns:minmax(0,1fr)}
   .rail{order:-1}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
 }
-@media (prefers-reduced-motion:reduce){.track i{transition:none}}
+@media (prefers-reduced-motion:reduce){.track i,.meal,button{transition:none}button:active{transform:none}}
 </style>
 </head>
 <body>
@@ -98,18 +119,19 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
       <h1>Lean Bulk Forecast</h1>
     </div>
     <div class="kpis">
-      <div class="kpi"><span class="lab">Today, predicted</span><span class="big" id="kToday">–</span><span class="sub" id="kTodaySub">&nbsp;</span></div>
-      <div class="kpi"><span class="lab">Today's meals add</span><span class="big" id="kDay">–</span><span class="sub" id="kDaySub">&nbsp;</span></div>
-      <div class="kpi"><span class="lab">In 6 months, on plan</span><span class="big" id="k6">–</span><span class="sub" id="k6Sub">&nbsp;</span></div>
-      <div class="kpi"><span class="lab">Healthy BMI 18.5</span><span class="big" id="kBmi">–</span><span class="sub" id="kBmiSub">&nbsp;</span></div>
+      <div class="kpi"><span class="lab">Today, predicted</span><span class="big" id="kToday">-</span><span class="sub" id="kTodaySub">&nbsp;</span></div>
+      <div class="kpi"><span class="lab">Today's meals add</span><span class="big" id="kDay">-</span><span class="sub" id="kDaySub">&nbsp;</span></div>
+      <div class="kpi"><span class="lab">In 6 months, on plan</span><span class="big" id="k6">-</span><span class="sub" id="k6Sub">&nbsp;</span></div>
+      <div class="kpi"><span class="lab">Healthy BMI 18.5</span><span class="big" id="kBmi">-</span><span class="sub" id="kBmiSub">&nbsp;</span></div>
     </div>
   </header>
 
   <main class="grid">
     <section class="charts">
       <div class="panel">
-        <div class="ph"><h2>Next 4 weeks, day by day</h2><p class="readout" id="r1">Point at the chart to read a day.</p></div>
-        <div class="chart" id="c1"></div>
+        <h2>Next 4 weeks, day by day</h2>
+        <p class="readout" id="r1" aria-live="polite">Point at or tap the chart to read a day. With the keyboard, focus it and use the arrow keys.</p>
+        <div class="chart" id="c1" tabindex="0" aria-describedby="r1"></div>
         <div class="legend">
           <span><i class="sw past"></i>Model so far</span>
           <span><i class="sw"></i>On plan, every day</span>
@@ -118,8 +140,9 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
         </div>
       </div>
       <div class="panel">
-        <div class="ph"><h2>6 months</h2><p class="readout" id="r2">Point at the chart to read a day.</p></div>
-        <div class="chart" id="c2"></div>
+        <h2>6 months</h2>
+        <p class="readout" id="r2" aria-live="polite">Point at or tap the chart to read a day.</p>
+        <div class="chart" id="c2" tabindex="0" aria-describedby="r2"></div>
         <div class="legend">
           <span><i class="sw past"></i>Model so far</span>
           <span><i class="sw"></i>On plan</span>
@@ -133,23 +156,56 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
       <div class="panel" id="authPanel" hidden>
         <form class="set" id="authForm" style="margin-top:0">
           <h2>Sign in to save online</h2>
-          <label class="field">Email<input type="email" id="aEmail" autocomplete="username" required></label>
-          <label class="field">Password<input type="password" id="aPass" autocomplete="current-password" required></label>
-          <button type="submit">Sign in</button>
-          <p class="status" id="aStatus" aria-live="polite" style="margin:0"></p>
+          <div class="field"><label for="aEmail">Email</label><input type="email" id="aEmail" autocomplete="username" required></div>
+          <div class="field"><label for="aPass">Password</label>
+            <div class="inline"><input type="password" id="aPass" autocomplete="current-password" required><button type="button" class="ghost" id="aShow" aria-pressed="false">Show</button></div>
+          </div>
+          <button type="submit" id="aBtn">Sign in</button>
+          <p class="status" id="aStatus" aria-live="polite"></p>
         </form>
-        <p class="note" id="aSigned" hidden style="margin:0">Saving online as <b id="aWho"></b>. <a href="#" id="aOut">Sign out</a></p>
+        <p class="note" id="aSigned" hidden>Saving online as <b id="aWho"></b>. <a href="#" id="aOut">Sign out</a></p>
       </div>
-      <div class="panel">
-        <h2>Daily log</h2>
-        <div class="row2" style="margin-top:10px">
-          <label class="field">Day<input type="date" id="fDate"></label>
-          <label class="field">Morning weight (kg)<input type="number" id="fWeight" step="0.1" min="30" max="150" inputmode="decimal" placeholder="optional"></label>
+      <div class="panel stack">
+        <div class="ph" style="margin:0"><h2>Daily log</h2><span class="pill" id="status" role="status">Not saved yet</span></div>
+
+        <div class="field">
+          <label for="fDate">Day</label>
+          <div class="inline">
+            <button type="button" class="ghost sq" id="dPrev" aria-label="Previous day">‹</button>
+            <input type="date" id="fDate">
+            <button type="button" class="ghost sq" id="dNext" aria-label="Next day">›</button>
+            <button type="button" class="ghost" id="dToday">Today</button>
+          </div>
         </div>
-        <ul class="meals" id="meals"></ul>
-        <label class="field">Extra food (kcal)<input type="number" id="fExtra" step="10" min="0" inputmode="numeric" placeholder="0"></label>
+
+        <div class="field">
+          <label for="fWeight">Morning weight, before eating (kg)</label>
+          <div class="inline weight">
+            <button type="button" class="ghost sq" id="wDown" aria-label="Weight minus 0.1 kg">−</button>
+            <input type="number" id="fWeight" step="0.1" min="30" max="150" inputmode="decimal" placeholder="skip" aria-describedby="wHelp">
+            <button type="button" class="ghost sq" id="wUp" aria-label="Weight plus 0.1 kg">+</button>
+          </div>
+          <span class="note" id="wHelp">Optional. The buttons start from your last weigh-in.</span>
+        </div>
+
+        <div class="field">
+          <div class="mhead"><span id="mealsLabel" style="font-weight:500">Meals eaten</span><button type="button" class="ghost sm" id="mAll">Tick all</button></div>
+          <ul class="meals" id="meals" aria-labelledby="mealsLabel"></ul>
+        </div>
+
+        <div class="field">
+          <label for="fExtra">Extra food (kcal)</label>
+          <div class="inline"><input type="number" id="fExtra" step="10" min="0" inputmode="numeric" placeholder="0" aria-describedby="xHelp"></div>
+          <div class="chips">
+            <button type="button" class="ghost sm" data-add="100">+100</button>
+            <button type="button" class="ghost sm" data-add="200">+200</button>
+            <button type="button" class="ghost sm" data-add="500">+500</button>
+            <button type="button" class="ghost sm" data-add="0">Clear</button>
+          </div>
+          <span class="note" id="xHelp">A glass of whole milk is about 200 kcal, a handful of nuts about 180.</span>
+        </div>
+
         <p class="note" id="planNote"></p>
-        <p class="status" id="status" aria-live="polite"></p>
       </div>
 
       <div class="panel">
@@ -174,9 +230,9 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
           </div>
           <label class="field">Activity
             <select id="sAct">
-              <option value="1.375">Light: 1–2 gym days a week</option>
-              <option value="1.55">Moderate: 3–4 gym days a week</option>
-              <option value="1.725">High: 5–6 gym days a week</option>
+              <option value="1.375">Light: 1-2 gym days a week</option>
+              <option value="1.55">Moderate: 3-4 gym days a week</option>
+              <option value="1.725">High: 5-6 gym days a week</option>
             </select>
           </label>
           <label class="field">Daily surplus
@@ -187,6 +243,7 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
             </select>
           </label>
           <button type="submit">Save settings</button>
+          <p class="status" id="sStatus" role="status"></p>
         </form>
       </details>
     </aside>
@@ -277,15 +334,25 @@ function drawChart(host, readout, o) {
   host.innerHTML = s;
 
   const guide = $(host.id + "g"), byX = o.series.map(se => new Map(se.pts.map(p => [p[0], p[1]])));
-  host.onpointermove = e => {
-    const r = host.getBoundingClientRect();
-    const v = Math.round(o.x0 + (e.clientX - r.left - L) / (W - L - R) * (o.x1 - o.x0));
-    if (v < o.x0 || v > o.x1) return;
+  const show = v => {
+    v = Math.max(o.x0, Math.min(o.x1, v)); host._v = v;
     guide.setAttribute("x1", x(v)); guide.setAttribute("x2", x(v)); guide.setAttribute("visibility", "visible");
     const parts = o.series.map((se, i) => byX[i].has(v) ? `${se.name} ${kg(byX[i].get(v))} kg` : null).filter(Boolean);
-    readout.textContent = `${fmtDay(o.dateOf(v))} · ${parts.join(" · ") || "no data"}`;
+    readout.textContent = `${fmtDay(o.dateOf(v))}: ${parts.join(", ") || "no data"}`;
+  };
+  host.onpointermove = host.onpointerdown = e => {
+    const r = host.getBoundingClientRect();
+    show(Math.round(o.x0 + (e.clientX - r.left - L) / (W - L - R) * (o.x1 - o.x0)));
   };
   host.onpointerleave = () => guide.setAttribute("visibility", "hidden");
+  host.onkeydown = e => {
+    const step = {ArrowLeft: -1, ArrowRight: 1}[e.key];
+    if (!step) return;
+    e.preventDefault();
+    show((host._v ?? o.todayX ?? o.x0) + step * (e.shiftKey ? 7 : 1));
+  };
+  host.onfocus = () => show(host._v ?? o.todayX ?? o.x0);
+  host.onblur = () => guide.setAttribute("visibility", "hidden");
 }
 
 function render() {
@@ -314,13 +381,13 @@ function render() {
     label: "Weight for the next four weeks", h: 250, x0: -7, x1: 28, ystep: .5,
     dateOf: v => addDays(t, v), todayX: 0,
     series: [
-      {name: "model", color: "var(--ink)", pts: days.filter(d => d.i >= tIdx - 7).map(d => [d.i - tIdx, d.w])},
-      {name: "plan", color: "var(--gain)", marks: true, pts: Array.from({length: 29}, (_, i) => [i, wNow + i * gPlan])},
+      {name: "so far", color: "var(--ink)", pts: days.filter(d => d.i >= tIdx - 7).map(d => [d.i - tIdx, d.w])},
+      {name: "on plan", color: "var(--gain)", marks: true, pts: Array.from({length: 29}, (_, i) => [i, wNow + i * gPlan])},
     ],
     dots: Object.entries(LOGS).filter(([d, L]) => +L.weight > 0).map(([d, L]) => [diffDays(t, d), +L.weight]).filter(p => p[0] >= -7 && p[0] <= 28),
     xticks: [-7, 0, 7, 14, 21, 28].map(v => ({x: v, label: v === 0 ? "" : fmtShort(addDays(t, v))})),
   };
-  if (gPace != null) c1.series.push({name: "pace", color: "var(--pace)", dash: true, pts: Array.from({length: 29}, (_, i) => [i, wNow + i * gPace])});
+  if (gPace != null) c1.series.push({name: "your pace", color: "var(--pace)", dash: true, pts: Array.from({length: 29}, (_, i) => [i, wNow + i * gPace])});
   drawChart($("c1"), $("r1"), c1);
 
   // Bottom chart: start date to start + 182 days
@@ -329,14 +396,14 @@ function render() {
     label: "Weight over six months", h: 270, x0: 0, x1: end, ystep: 1,
     dateOf: v => addDays(S.startDate, v), todayX: tIdx,
     series: [
-      {name: "model", color: "var(--ink)", pts: days.map(d => [d.i, d.w])},
-      {name: "plan", color: "var(--gain)", pts: span.map(i => [i, wNow + (i - tIdx) * gPlan])},
+      {name: "so far", color: "var(--ink)", pts: days.map(d => [d.i, d.w])},
+      {name: "on plan", color: "var(--gain)", pts: span.map(i => [i, wNow + (i - tIdx) * gPlan])},
     ],
     dots: Object.entries(LOGS).filter(([d, L]) => +L.weight > 0).map(([d, L]) => [diffDays(S.startDate, d), +L.weight]).filter(p => p[0] >= 0 && p[0] <= end),
     hlines: [{y: bmiKg(18.5), label: "BMI 18.5"}, {y: bmiKg(20), label: "BMI 20"}],
     xticks: [],
   };
-  if (gPace != null) c2.series.push({name: "pace", color: "var(--pace)", dash: true, pts: span.map(i => [i, wNow + (i - tIdx) * gPace])});
+  if (gPace != null) c2.series.push({name: "your pace", color: "var(--pace)", dash: true, pts: span.map(i => [i, wNow + (i - tIdx) * gPace])});
   for (let i = 0; i <= end; i++) { const d = addDays(S.startDate, i); if (d.endsWith("-01")) c2.xticks.push({x: i, label: parse(d).toLocaleDateString("en-GB", {month: "short"})}); }
   drawChart($("c2"), $("r2"), c2);
 
@@ -365,27 +432,67 @@ function render() {
 
 // Daily log form
 $("meals").innerHTML = MEALS.map(m => `<li><label class="meal"><input type="checkbox" id="m_${m.id}"><span><b>${m.name}</b><span class="what">${m.what}</span></span><span class="kc">${m.kcal} kcal<br>${m.p} g protein</span></label></li>`).join("");
+if (Object.keys(LOGS).length) setStatus("Saved on this device", "ok");
 function fillForm() {
   const L = LOGS[sel] || {};
   $("fDate").value = sel;
   $("fWeight").value = L.weight || "";
   $("fExtra").value = L.extra || "";
   MEALS.forEach(m => $("m_" + m.id).checked = !!(L.meals && L.meals[m.id]));
+  syncAllButton();
 }
 function readForm() {
   const meals = {}; MEALS.forEach(m => meals[m.id] = $("m_" + m.id).checked);
   return {weight: +$("fWeight").value || null, extra: +$("fExtra").value || 0, meals};
 }
+function setStatus(text, kind) { $("status").textContent = text; $("status").className = "pill " + (kind || ""); }
 function onLogChange() {
-  const day = sel;
-  LOGS = {...LOGS, [day]: readForm()};
+  LOGS = {...LOGS, [sel]: readForm()};
   render();
-  $("status").textContent = store("lbf.logs", LOGS) ? `Saved ${fmtDay(day)} in this browser.` : "Not saved: this browser blocks storage (private window?).";
+  if (!store("lbf.logs", LOGS)) setStatus("Not saved: browser storage is blocked", "err");
+  else if (uid) setStatus("Saving…");
+  else setStatus("Saved on this device", "ok");
   pushCloud();
+  syncAllButton();
 }
 ["fWeight", "fExtra"].forEach(id => $(id).addEventListener("input", onLogChange));
 MEALS.forEach(m => $("m_" + m.id).addEventListener("change", onLogChange));
-$("fDate").addEventListener("change", e => { if (e.target.value) { sel = e.target.value; fillForm(); } });
+
+// Day navigation
+const goDay = d => { sel = d; fillForm(); };
+$("fDate").addEventListener("change", e => { if (e.target.value) goDay(e.target.value); });
+$("dPrev").addEventListener("click", () => goDay(addDays(sel, -1)));
+$("dNext").addEventListener("click", () => goDay(addDays(sel, 1)));
+$("dToday").addEventListener("click", () => goDay(today()));
+
+// Weight stepper: an empty field starts from the latest weigh-in on or before this day.
+function lastWeight() {
+  const d = Object.keys(LOGS).filter(k => k <= sel && +LOGS[k].weight > 0).sort().pop();
+  return d ? +LOGS[d].weight : +S.startWeight;
+}
+const stepWeight = delta => {
+  const cur = +$("fWeight").value;
+  $("fWeight").value = (cur > 0 ? Math.round((cur + delta) * 10) / 10 : lastWeight()).toFixed(1);
+  onLogChange();
+};
+$("wDown").addEventListener("click", () => stepWeight(-0.1));
+$("wUp").addEventListener("click", () => stepWeight(0.1));
+
+// Meals: tick all / untick all
+const allTicked = () => MEALS.every(m => $("m_" + m.id).checked);
+function syncAllButton() { $("mAll").textContent = allTicked() ? "Untick all" : "Tick all"; }
+$("mAll").addEventListener("click", () => {
+  const to = !allTicked();
+  MEALS.forEach(m => $("m_" + m.id).checked = to);
+  onLogChange();
+});
+
+// Extra kcal quick-add
+document.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => {
+  const add = +b.dataset.add;
+  $("fExtra").value = add ? (+$("fExtra").value || 0) + add : "";
+  onLogChange();
+}));
 
 // Settings
 function fillSettings() {
@@ -397,7 +504,9 @@ $("setForm").addEventListener("submit", e => {
   S = {startDate: $("sDate").value, startWeight: +$("sWeight").value, height: +$("sHeight").value,
        age: +$("sAge").value, activity: +$("sAct").value, surplus: +$("sSurplus").value};
   render();
-  $("status").textContent = store("lbf.settings", S) ? "Settings saved." : "Settings not saved: this browser blocks storage.";
+  const ok = store("lbf.settings", S);
+  $("sStatus").textContent = ok ? (uid ? "Settings saved online." : "Settings saved on this device.") : "Not saved: browser storage is blocked.";
+  $("sStatus").className = "status " + (ok ? "" : "err");
   pushCloud();
 });
 
@@ -410,7 +519,8 @@ function pushCloud() {
   pushTimer = setTimeout(() => {
     pushing = pushing.then(async () => {
       const {error} = await sb.from("bulk_data").upsert({user_id: uid, settings: S, logs: LOGS, updated_at: new Date().toISOString()});
-      $("status").textContent = error ? `Saved in this browser only. Online save failed: ${error.message}` : "Saved online.";
+      if (error) { setStatus("Online save failed", "err"); $("status").title = `${error.message}. Your entry is kept on this device and goes online with the next change.`; }
+      else { setStatus("Saved online", "ok"); $("status").title = ""; }
     });
   }, 800);
 }
@@ -418,7 +528,8 @@ async function signedIn(user) {
   uid = user.id;
   $("authForm").hidden = true; $("aSigned").hidden = false; $("aWho").textContent = user.email;
   const {data, error} = await sb.from("bulk_data").select("settings, logs").eq("user_id", uid).maybeSingle();
-  if (error) { $("status").textContent = `Could not load your online log: ${error.message}`; return; }
+  if (error) { setStatus("Could not load online log", "err"); $("status").title = error.message; return; }
+  setStatus("Online", "ok");
   const cloudDays = data ? Object.keys(data.logs || {}).length : 0;
   if (data) {
     LOGS = {...LOGS, ...(data.logs || {})};
@@ -433,17 +544,29 @@ if (sb) {
   sb.auth.getSession().then(({data}) => { if (data.session) signedIn(data.session.user); });
   $("authForm").addEventListener("submit", async e => {
     e.preventDefault();
-    $("aStatus").textContent = "Signing in…";
+    $("aBtn").disabled = true; $("aBtn").textContent = "Signing in…";
+    $("aStatus").textContent = ""; $("aStatus").className = "status";
     const {data, error} = await sb.auth.signInWithPassword({email: $("aEmail").value, password: $("aPass").value});
-    if (error) { $("aStatus").textContent = `Sign-in failed: ${error.message}`; return; }
-    $("aStatus").textContent = ""; $("aPass").value = "";
+    $("aBtn").disabled = false; $("aBtn").textContent = "Sign in";
+    if (error) {
+      $("aStatus").textContent = `Sign-in failed: ${error.message}. Check the email and password you created in Supabase.`;
+      $("aStatus").className = "status err";
+      return;
+    }
+    $("aPass").value = "";
     signedIn(data.user);
+  });
+  $("aShow").addEventListener("click", () => {
+    const show = $("aPass").type === "password";
+    $("aPass").type = show ? "text" : "password";
+    $("aShow").textContent = show ? "Hide" : "Show";
+    $("aShow").setAttribute("aria-pressed", String(show));
   });
   $("aOut").addEventListener("click", async e => {
     e.preventDefault();
     await sb.auth.signOut(); uid = null;
     $("authForm").hidden = false; $("aSigned").hidden = true;
-    $("status").textContent = "Signed out. Saving only in this browser.";
+    setStatus("Signed out: saving on this device only");
   });
 }
 
