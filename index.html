@@ -196,12 +196,14 @@ button.sm{min-height:36px;padding:4px 12px;font-size:14px}
           <label for="fExtra">Extra food (kcal)</label>
           <div class="inline"><input type="number" id="fExtra" step="10" min="0" inputmode="numeric" placeholder="0" aria-describedby="xHelp"></div>
           <div class="chips">
-            <button type="button" class="ghost sm" data-add="100">+100</button>
-            <button type="button" class="ghost sm" data-add="200">+200</button>
-            <button type="button" class="ghost sm" data-add="500">+500</button>
+            <button type="button" class="ghost sm" data-add="160">Glass of milk +160</button>
+            <button type="button" class="ghost sm" data-add="180">Handful of nuts +180</button>
+            <button type="button" class="ghost sm" data-add="200">Peanut butter toast +200</button>
+            <button type="button" class="ghost sm" data-add="270">4 dates +270</button>
+            <button type="button" class="ghost sm" data-add="100">Other +100</button>
             <button type="button" class="ghost sm" data-add="0">Clear</button>
           </div>
-          <span class="note" id="xHelp">A glass of whole milk is about 200 kcal, a handful of nuts about 180.</span>
+          <span class="note" id="xHelp">Tap a button each time you eat one. Tap twice for two.</span>
         </div>
 
         <p class="note" id="planNote"></p>
@@ -259,9 +261,9 @@ const SUPABASE_KEY = "sb_publishable_TrTsASLKqp3jesMWr8LQGg_vbsi752I";
 const KCAL_PER_KG = 7700;
 const MEALS = [
   {id:"breakfast", name:"Breakfast", what:"3 eggs fried in 10 ml rapeseed oil, 1 tbsp olive oil, 1 banana, 150 g yoghurt", kcal:640, p:25},
-  {id:"snack1", name:"Shake 1", what:"Blend: 500 ml whole milk, 1 banana, 40 g oats, 1 tbsp peanut butter", kcal:675, p:26},
+  {id:"snack1", name:"Shake 1", what:"1 scoop protein powder, 300 ml whole milk, 40 g oats, 1 tbsp peanut butter, 1 banana", kcal:665, p:44},
   {id:"lunch", name:"One cooked meal", what:"Lunch or dinner: chicken or chana curry with 250 g cooked rice or 2-3 roti, 1 tbsp oil", kcal:700, p:40},
-  {id:"snack2", name:"Shake 2", what:"Blend: 300 ml whole milk, 150 g yoghurt, 1 banana, 30 g oats, 1 tbsp peanut butter", kcal:600, p:24},
+  {id:"snack2", name:"Shake 2", what:"Same shake again", kcal:665, p:44},
 ];
 const PLAN_KCAL = MEALS.reduce((t, m) => t + m.kcal, 0);
 
