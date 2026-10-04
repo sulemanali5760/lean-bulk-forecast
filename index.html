@@ -207,7 +207,7 @@ const fmtShort = s => parse(s).toLocaleDateString("en-GB", {day:"numeric", month
 const kg = v => v.toFixed(1);
 const signed = (v, d = 0) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(d);
 
-const DEFAULTS = {startDate: "2026-10-04", startWeight: 50, height: 170, age: 25, activity: 1.55, surplus: 400};
+const DEFAULTS = {startDate: "2026-10-04", startWeight: 50.1, height: 170, age: 26, activity: 1.55, surplus: 400};
 // Everything is kept in this browser's localStorage.
 const load = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k)); return v || fb; } catch { return fb; } };
 const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
