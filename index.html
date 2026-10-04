@@ -130,6 +130,16 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
     </section>
 
     <aside class="rail">
+      <div class="panel" id="authPanel" hidden>
+        <form class="set" id="authForm" style="margin-top:0">
+          <h2>Sign in to save online</h2>
+          <label class="field">Email<input type="email" id="aEmail" autocomplete="username" required></label>
+          <label class="field">Password<input type="password" id="aPass" autocomplete="current-password" required></label>
+          <button type="submit">Sign in</button>
+          <p class="status" id="aStatus" aria-live="polite" style="margin:0"></p>
+        </form>
+        <p class="note" id="aSigned" hidden style="margin:0">Saving online as <b id="aWho"></b>. <a href="#" id="aOut">Sign out</a></p>
+      </div>
       <div class="panel">
         <h2>Daily log</h2>
         <div class="row2" style="margin-top:10px">
@@ -185,7 +195,11 @@ button{font:600 14px var(--body);background:var(--gain);color:var(--surface);bor
   <p class="foot">How it works: your maintenance calories come from the Mifflin-St Jeor formula times your activity level. Every ticked meal adds its calories; anything above maintenance turns into weight at about 7,700 kcal per kg. A weigh-in resets the model to the real number. Days you don't log count as maintenance, so they add nothing. Scale weight swings up to 1 kg a day with water and food, so compare weekly, not daily.</p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
 <script>
+// Supabase project. The publishable (anon) key is meant to be public; row level security keeps each login's row private.
+const SUPABASE_URL = "";
+const SUPABASE_KEY = "";
 const KCAL_PER_KG = 7700;
 const MEALS = [
   {id:"breakfast", name:"Breakfast", what:"80 g oats in 300 ml whole milk, 1 banana, 1 tbsp peanut butter", kcal:690, p:25},
@@ -367,6 +381,7 @@ function onLogChange() {
   LOGS = {...LOGS, [day]: readForm()};
   render();
   $("status").textContent = store("lbf.logs", LOGS) ? `Saved ${fmtDay(day)} in this browser.` : "Not saved: this browser blocks storage (private window?).";
+  pushCloud();
 }
 ["fWeight", "fExtra"].forEach(id => $(id).addEventListener("input", onLogChange));
 MEALS.forEach(m => $("m_" + m.id).addEventListener("change", onLogChange));
@@ -383,7 +398,54 @@ $("setForm").addEventListener("submit", e => {
        age: +$("sAge").value, activity: +$("sAct").value, surplus: +$("sSurplus").value};
   render();
   $("status").textContent = store("lbf.settings", S) ? "Settings saved." : "Settings not saved: this browser blocks storage.";
+  pushCloud();
 });
+
+// Online sync: one row per login in the bulk_data table. The browser copy stays as a cache.
+const sb = SUPABASE_URL && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let uid = null, pushTimer = null, pushing = Promise.resolve();
+function pushCloud() {
+  if (!sb || !uid) return;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(() => {
+    pushing = pushing.then(async () => {
+      const {error} = await sb.from("bulk_data").upsert({user_id: uid, settings: S, logs: LOGS, updated_at: new Date().toISOString()});
+      $("status").textContent = error ? `Saved in this browser only. Online save failed: ${error.message}` : "Saved online.";
+    });
+  }, 800);
+}
+async function signedIn(user) {
+  uid = user.id;
+  $("authForm").hidden = true; $("aSigned").hidden = false; $("aWho").textContent = user.email;
+  const {data, error} = await sb.from("bulk_data").select("settings, logs").eq("user_id", uid).maybeSingle();
+  if (error) { $("status").textContent = `Could not load your online log: ${error.message}`; return; }
+  const cloudDays = data ? Object.keys(data.logs || {}).length : 0;
+  if (data) {
+    LOGS = {...LOGS, ...(data.logs || {})};
+    if (data.settings && data.settings.startDate) S = {...DEFAULTS, ...data.settings};
+    store("lbf.logs", LOGS); store("lbf.settings", S);
+    fillForm(); fillSettings(); render();
+  }
+  if (!data || Object.keys(LOGS).length > cloudDays) pushCloud(); // upload days logged before signing in
+}
+if (sb) {
+  $("authPanel").hidden = false;
+  sb.auth.getSession().then(({data}) => { if (data.session) signedIn(data.session.user); });
+  $("authForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    $("aStatus").textContent = "Signing in…";
+    const {data, error} = await sb.auth.signInWithPassword({email: $("aEmail").value, password: $("aPass").value});
+    if (error) { $("aStatus").textContent = `Sign-in failed: ${error.message}`; return; }
+    $("aStatus").textContent = ""; $("aPass").value = "";
+    signedIn(data.user);
+  });
+  $("aOut").addEventListener("click", async e => {
+    e.preventDefault();
+    await sb.auth.signOut(); uid = null;
+    $("authForm").hidden = false; $("aSigned").hidden = true;
+    $("status").textContent = "Signed out. Saving only in this browser.";
+  });
+}
 
 fillForm(); fillSettings(); render();
 new ResizeObserver(() => render()).observe($("c1"));
